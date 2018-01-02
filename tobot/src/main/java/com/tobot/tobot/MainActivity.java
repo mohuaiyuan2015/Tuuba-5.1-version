@@ -30,9 +30,11 @@ import com.tobot.tobot.presenter.BRealize.BConnect;
 import com.tobot.tobot.presenter.BRealize.BFrame;
 import com.tobot.tobot.presenter.BRealize.BaseTTSCallback;
 import com.tobot.tobot.presenter.BRealize.DormantManager;
+import com.tobot.tobot.presenter.BRealize.DormantUtils;
 import com.tobot.tobot.presenter.BRealize.InterruptTTSCallback;
 import com.tobot.tobot.presenter.BRealize.LieDownAndSleep;
 import com.tobot.tobot.presenter.BRealize.SitDownAndSleep;
+import com.tobot.tobot.presenter.BRealize.SitDownAndSleepTimeTask;
 import com.tobot.tobot.presenter.BRealize.StraightToSleep;
 import com.tobot.tobot.presenter.ICommon.ISceneV;
 
@@ -254,9 +256,6 @@ public class MainActivity extends BaseActivity implements ISceneV {
                                         activeTimer.cancel();
                                         activeTimer = new Timer();
 
-                                        //mohuaiyuan 20171226 新的代码 20171226
-//                                        DormantManager dormantManager=new DormantManager();
-//                                        dormantManager.cancelSitDownAndSleepTrigger();
 
                                     }
                                     if(hintConnect){//断网收到语音提示-->离线语音
@@ -292,8 +291,8 @@ public class MainActivity extends BaseActivity implements ISceneV {
 
                                     //mohuaiyuan 20171226 新的代码 20171226
                                     //TODO 唤醒的地方
+                                    Log.d("IDormant", "摸头唤醒 之后 回调: ");
                                     dealAwakenBehavior();
-
 
                                 }
                                 break;
@@ -312,26 +311,26 @@ public class MainActivity extends BaseActivity implements ISceneV {
 //                        mBFrame.outAction(BodyActionCode.ACTION_8);
 //                        mBFrame.FallAsleep();
                         //mohuaiyuan 20171226 新的代码 20171226
+                        Log.d("IDormant", "自动休眠: ");
                         StraightToSleep straightToSleep=new StraightToSleep();
                         straightToSleep.dormant();
                         DormantManager.setType(DormantManager.DORMANT_TYPE_STRAIGHT_TO_SLEEP);
 
-                        //站着休眠10分钟不唤醒 ,触发 坐下休眠
-                        DormantManager dormantManager=new DormantManager();
-                        dormantManager.sitDownAndSleepTrigger();
+                        //站着休眠N分钟不唤醒 ,触发 坐下休眠
+//                        Message message=new Message();
+//                        message.what=Constants.SIT_DOWN_AND_SLEEP_DORMANT;
+//                        mainHandler.sendMessage(message);
 
                     }
                     break;
 
                 //mohuaiyuan 20171226 新的代码 20171226
                 case Constants.SIT_DOWN_AND_SLEEP_DORMANT:
-                    Log.d(TAG, "站着休眠10分钟不唤醒  进入坐下休息（休眠）");
-                    //唤醒
-                    mBFrame.Wakeup(3);
-                    //发送动作、表情等等
-                    //继续休眠
-                    SitDownAndSleep sitDownAndSleep=new SitDownAndSleep();
-                    sitDownAndSleep.dormant();
+                    Log.d("IDormant", "mainHandler: Constants.SIT_DOWN_AND_SLEEP_DORMANT:");
+                    //站着休眠N分钟不唤醒 ,触发 坐下休眠
+                    DormantManager dormantManager=new DormantManager();
+                    dormantManager.sitDownAndSleepTrigger();
+
 
                     break;
 
@@ -364,33 +363,9 @@ public class MainActivity extends BaseActivity implements ISceneV {
      * 处理 唤醒的逻辑
      */
     private void dealAwakenBehavior() {
-        Log.d(TAG, "dealAwakenBehavior: ");
-        int type= DormantManager.getType();
-        Log.d(TAG, "type: "+type);
-        AwakenBehavior awakenBehavior = null;
-        switch (type){
-
-            case DormantManager.DORMANT_TYPE_STRAIGHT_TO_SLEEP:
-                awakenBehavior=new StraightToSleep();
-                break;
-
-            case DormantManager.DORMANT_TYPE_SIT_DOWN_AND_SLEEP:
-                awakenBehavior=new SitDownAndSleep();
-                break;
-
-            case DormantManager.DORMANT_TYPE_LIE_DOWN_AND_SLEEP:
-                awakenBehavior=new LieDownAndSleep();
-                break;
-
-            default:
-
-                break;
-
-
-        }
-        if (awakenBehavior!=null){
-            awakenBehavior.awaken();
-        }
+        Log.d(TAG, "MainActivity dealAwakenBehavior: ");
+        DormantUtils dormantUtils=new DormantUtils();
+        dormantUtils.dealAwakenBehavior();
 
     }
 
@@ -434,6 +409,9 @@ public class MainActivity extends BaseActivity implements ISceneV {
                             if (l < 4000) {//连续点击
                                 Log("触摸--连续点击");
                                 onBle();
+
+                                //mohuaiyuan 20171228 新的代码 新增的代码
+                                exitTime = 0;
 
                                 //mohuaiyuan 20171220 新的代码 新增的代码
                                 MyTouchResponse myTouchResponse=new MyTouchResponse(mContext);

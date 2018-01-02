@@ -55,14 +55,16 @@ public class Constants {
     public static final String  SEPARATOR_BETWEEN_PLAYURL_ACTION="#,#";//playUrl 和 bodyActionCode（舞蹈编号） 的分隔符
 
 
-    public static final String  QVOICE_APPID = "f4b7c86a-ef57-11e6-8aa7-00e04c12c2c7";
-    public static final String  QVOICE_KEY = "0063909a-ef58-11e6-8a33-00e04c12c2c7";
+    public static final String  QVOICE_APPID = "d4aa2ff0-e924-11e7-b526-00163e13c8a2";
+    public static final String  QVOICE_KEY = "3b0468a1-c0cd-3313-a648-49cd7210b984";
     public static final String  QVOICE_PATH = "/sdcard/qvoice/cfg";
     public static final String  QVOICE_MIC = "/sdcard/qvoice/mic.wav";
     public static final String  QVOICE_PARAMS = "bfio";//bfasr
-    public static final String  QVOICE = "role=asr;cfg=/sdcard/qvoice/cldasr.bin;use_json=1;min_conf=1.9;timeout=3000";
-//    public static final String  QVOICE = "role=asr;cfg=/sdcard/qvoice/xasr/cfg;use_bin=0;use_json=1;min_conf=1.9;";
+//    public static final String  QVOICE = "role=asr;cfg=/sdcard/qvoice/cldasr.bin;use_json=1;min_conf=1.9;timeout=3000";
+    public static final String  QVOICE = "role=asr;cfg=/sdcard/qvoice/xasr/cfg;use_bin=0;use_json=1;min_conf=1.9;";//用asr2017.12.27
 
+
+    public static final String KIND_KEY="kind";
 
 
 }

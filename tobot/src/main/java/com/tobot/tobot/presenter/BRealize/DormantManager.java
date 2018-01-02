@@ -4,11 +4,13 @@ import android.os.Message;
 import android.util.Log;
 
 
+import com.tobot.tobot.presenter.IPort.AwakenBehavior;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by YF-04 on 2017/12/26.
+ * Created by mohuaiyuan on 2017/12/26.
  */
 
 public class DormantManager {
@@ -18,14 +20,17 @@ public class DormantManager {
     public static final int DORMANT_TYPE_SIT_DOWN_AND_SLEEP=46;
     public static final int DORMANT_TYPE_LIE_DOWN_AND_SLEEP=53;
 
+    /**
+     * 非正常睡觉
+     */
+    public static final int DORMANT_TYPE_ABNORMAL_SLEEP=685;
+
     private static int type;
 
     /**
-     * 坐下休息（休眠）：站着休眠10分钟不唤醒 之后就坐下休息了
+     * 坐下休息（休眠）：站着休眠 N分钟不唤醒 之后就坐下休息了
      */
     private static Timer sitDownAndSleepTimer=new Timer(true);
-
-    private static android.os.Handler mHandler=new android.os.Handler();
 
     private  SitDownAndSleepTimeTask sitDownAndSleepTimeTask;
 
@@ -34,6 +39,10 @@ public class DormantManager {
         return type;
     }
 
+    /**
+     * 设置休眠类型
+     * @param type
+     */
     public static void setType(int type) {
         DormantManager.type = type;
     }
@@ -42,17 +51,17 @@ public class DormantManager {
      * 创建任务：站着休眠N分钟不唤醒 ,进入坐下休息（休眠）
      */
     public    void sitDownAndSleepTrigger(){
-        Log.d(TAG, "DormantManager sitDownAndSleepTrigger: ");
+        Log.d(TAG, "DormantManager sitDownAndSleepTrigger: 开启任务");
         if (sitDownAndSleepTimeTask==null){
             sitDownAndSleepTimeTask=new SitDownAndSleepTimeTask();
         }
 
-        sitDownAndSleepTimer.schedule(sitDownAndSleepTimeTask,1*60*1000);//N分钟之后
+        sitDownAndSleepTimer.schedule(sitDownAndSleepTimeTask,10*60*1000);//N分钟之后
 
     }
 
     public void cancelSitDownAndSleepTrigger(){
-        Log.d(TAG, "DormantManager cancelSitDownAndSleepTrigger: ");
+        Log.d(TAG, "DormantManager cancelSitDownAndSleepTrigger:取消任务 ");
 //        if (sitDownAndSleepTimer!=null){
 //            sitDownAndSleepTimer.cancel();
 //        }
@@ -68,20 +77,6 @@ public class DormantManager {
         DormantManager.sitDownAndSleepTimer = sitDownAndSleepTimer;
     }
 
-    class SitDownAndSleepTimeTask extends TimerTask {
-
-        @Override
-        public void run() {
-            Log.d(TAG, "SitDownAndSleepTimeTask run: ");
-            Log.d(TAG, "站着休眠10分钟不唤醒  进入坐下休息（休眠）");
-            //唤醒
-            BFrame.Wakeup(3);
-            //发送动作、表情等等
-            //休眠
-            SitDownAndSleep sitDownAndSleep=new SitDownAndSleep();
-            sitDownAndSleep.dormant();
-        }
-    }
     
 
 }

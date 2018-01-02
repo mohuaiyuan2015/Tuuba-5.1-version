@@ -79,7 +79,7 @@ public class StraightToSleep  implements IDormant ,DormantBehavior,AwakenBehavio
 //                //5.2 命令执行完成后需明确告诉框架，命令处理结束，否则无法继续进行主对话流程。
 //                this.localCommandComplete.onComplete();
                 dormant();
-
+                //设置休眠类型
                 DormantManager.setType(DormantManager.DORMANT_TYPE_STRAIGHT_TO_SLEEP);
 
 
@@ -129,6 +129,12 @@ public class StraightToSleep  implements IDormant ,DormantBehavior,AwakenBehavio
                 Log.d(TAG, "StraightToSleep onCompleted: ");
                 //进入睡眠
                 BFrame.FallAsleep();
+
+                //站着休眠N分钟不唤醒 ,触发 坐下休眠
+                if (dormantManager==null){
+                    dormantManager=new DormantManager();
+                }
+                dormantManager.sitDownAndSleepTrigger();
             }
         };
         BFrame.setInterruptTTSCallback(new InterruptTTSCallback(BFrame.main,baseTTSCallback));
@@ -139,10 +145,7 @@ public class StraightToSleep  implements IDormant ,DormantBehavior,AwakenBehavio
             e.printStackTrace();
         }
 
-        if (dormantManager==null){
-            dormantManager=new DormantManager();
-        }
-        dormantManager.sitDownAndSleepTrigger();
+
 
 
     }
@@ -156,11 +159,6 @@ public class StraightToSleep  implements IDormant ,DormantBehavior,AwakenBehavio
             e.printStackTrace();
         }
 
-        if (dormantManager==null){
-            dormantManager=new DormantManager();
-            dormantManager.cancelSitDownAndSleepTrigger();
-        }
-        
     }
 
     public static PrepareSleepBehavior getPrepareSleepBehavior() {

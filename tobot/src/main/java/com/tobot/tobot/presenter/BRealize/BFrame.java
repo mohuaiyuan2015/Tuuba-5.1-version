@@ -186,7 +186,7 @@ public class BFrame implements IFrame {
                     break;
                 case Constants.REPLACE_ASR:
                     //mohuaiyuan  暂时先注释  20171226
-//                    replaceFunction();
+                    replaceFunction();
                     break;
                 case Constants.START_SUCESS_MSG:
                     Log.e(TAG, "⊙_⊙  框架加载成功");

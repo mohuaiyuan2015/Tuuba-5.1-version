@@ -25,7 +25,7 @@ import java.util.Map;
 public class LieDownAndSleep implements IDormant  ,DormantBehavior,AwakenBehavior {
     private static final String TAG = "IDormant";
 
-    private Context mContext;
+    private static Context mContext;
     private ISceneV mISceneV;
     private LocalCommandCenter localCommandCenter;
     private LocalCommand sleepCommand;
@@ -67,6 +67,7 @@ public class LieDownAndSleep implements IDormant  ,DormantBehavior,AwakenBehavio
 //                //5.2 命令执行完成后需明确告诉框架，命令处理结束，否则无法继续进行主对话流程。
 //                this.localCommandComplete.onComplete();
                 dormant();
+                //设置休眠类型
                 DormantManager.setType(DormantManager.DORMANT_TYPE_LIE_DOWN_AND_SLEEP);
 
             }

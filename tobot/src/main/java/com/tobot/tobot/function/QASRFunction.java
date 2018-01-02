@@ -13,8 +13,13 @@ import com.qdreamer.qvoice.QSession;
 import com.tobot.tobot.MainActivity;
 import com.tobot.tobot.R;
 import com.tobot.tobot.base.Constants;
+import com.tobot.tobot.base.TobotApplication;
 import com.tobot.tobot.entity.QASREntity;
 import com.tobot.tobot.presenter.BRealize.BFrame;
+import com.tobot.tobot.presenter.BRealize.BaseTTSCallback;
+import com.tobot.tobot.presenter.BRealize.DormantManager;
+import com.tobot.tobot.presenter.BRealize.DormantUtils;
+import com.tobot.tobot.presenter.BRealize.InterruptTTSCallback;
 import com.tobot.tobot.utils.TobotUtils;
 import com.turing123.robotframe.config.SystemConfig;
 import com.turing123.robotframe.event.AppEvent;
@@ -28,12 +33,14 @@ import com.turing123.robotframe.internal.function.asr.IFrameASRHotWordUploadCall
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Javen on 2017/10/31.
  */
 
 public class QASRFunction implements IASRFunction {
+//    private static final String TAG = "IDormant";
     private static final String TAG = "Javen QASRFunction";
     private static final String TAG1 = "QASRFunction";
     private Context mContext;
@@ -50,30 +57,40 @@ public class QASRFunction implements IASRFunction {
     private Gson gson = new Gson();
     private QEngine asrEngine;
     private MainActivity mainActivity;
+    private QSession mQSession;
 
 
     public QASRFunction(Context context) {
         this.mContext = context;
         mainActivity = (MainActivity)mContext;
     }
-
     @Override
     public void initASR(IInitialCallback iInitialCallback) {
         this.initialCallback = iInitialCallback;
-        session = QSession.initSession(Constants.QVOICE_APPID, Constants.QVOICE_KEY);//初始化session
+        mQSession = new QSession(TobotApplication.getInstance());
+        session = mQSession.initSession(Constants.QVOICE_APPID, Constants.QVOICE_KEY);//初始化session
+        Log.i(TAG, "session:" + session);
+        mQSession.setQSessionCallback(new QSession.QSessionCallBack() {
+
+            @Override
+            public void errorCode(String arg0) {
+                Log.d("qdreamer", "error code:"+arg0);
+            }
+        });
         init = QModule.init(session, Constants.QVOICE_PARAMS, Constants.QVOICE_PATH);
-        Log.i(TAG, "init:" + init);
+        Log.i(TAG, "QModule.init:" + init);
         if (init) {
             asrEngine = new QEngine();// 创建识别引擎实例
             asrInit = asrEngine.init(session, Constants.QVOICE, asrHandler);// 初始化asr引擎
+            Log.i(TAG, "asrEngine.init:" + asrEngine);
             if (asrInit) {
                 start = QModule.start(sessionhandler);// 启动引擎
-                Log.i(TAG, "start:" + start);
+                Log.i(TAG, "QModule.start:" + start);
                 if (start) {
                     state = FunctionState.IDLE;
                     if (initialCallback != null) {
                         initialCallback.onSuccess();
-                        asrInterrupted();
+                        asrInterrupted();//提供asr打断回调
                     }
                 } else {
                     state = FunctionState.ERROR;
@@ -84,7 +101,6 @@ public class QASRFunction implements IASRFunction {
             }
         }
     }
-
     @Override
     public void startRecord(IFrameASRCallback iFrameASRCallback, boolean b) {
         Log.e(TAG,"startRecord...开始录音" + state);
@@ -164,7 +180,7 @@ public class QASRFunction implements IASRFunction {
     Handler sessionhandler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(final Message msg) {
             if (msg.obj != null) {
                 data = (byte[]) msg.obj;
             }
@@ -195,14 +211,7 @@ public class QASRFunction implements IASRFunction {
                     break;
                 case QModule.QVOICE_AEC_WAKED:// 唤醒回调
                     Log.d(TAG, "唤醒回调");
-                    //mohuaiyuan 20171220 原来的代码
-//                    BFrame.TTS("我在");
-                    //mohuaiyuan 20171220 新的代码 20171220
-                    try {
-                        BFrame.response(R.string.wake_up_the_callback);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    BFrame.TTS("我在");
 
                     BFrame.getRobotFrameManager().interrupt(SystemConfig.INTERRUPT_TYPE_TOUCH, null);
                     break;
@@ -230,6 +239,36 @@ public class QASRFunction implements IASRFunction {
             super.handleMessage(msg);
         }
     };
+
+//    private static final String SLEEP_AWAKEN_CANCEL_TASK="sleep_awaken";
+//    /**
+//     * 关键词 唤醒机器人，取消任务（取消N分钟之后由直立休眠变成坐下休眠的任务）
+//     */
+//    Handler  sleepAwakenHandler =new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            Bundle bundle=msg.getData();
+//            String kind=bundle.getString(Constants.KIND_KEY);
+//            Log.d(TAG, "handleMessage: ");
+//            switch (kind){
+//
+//                case SLEEP_AWAKEN_CANCEL_TASK:
+//                    Log.d(TAG, "sleepAwakenHandler handleMessage: ");
+//                    Log.d(TAG, "cancelSitDownAndSleepTrigger:取消N分钟之后由直立休眠变成坐下休眠的任务 ");
+//                    if (DormantManager.getType()==DormantManager.DORMANT_TYPE_STRAIGHT_TO_SLEEP){
+//                        DormantManager dormantManager=new DormantManager();
+//                        dormantManager.cancelSitDownAndSleepTrigger();
+//                    }
+//                    break;
+//
+//                default:
+//                    break;
+//
+//            }
+//
+//        }
+//    };
 
     private byte[] discern;
     private String discernASR;
