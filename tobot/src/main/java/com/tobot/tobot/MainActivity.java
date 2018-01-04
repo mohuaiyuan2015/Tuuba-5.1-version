@@ -473,12 +473,21 @@ public class MainActivity extends BaseActivity implements ISceneV {
 
 
                         isFeelHead = false;
-                    } else if (isFeelHead == false) {
+                    } else {
                         isInitiativeOff = false;//关掉主动断网
                         mBConnect.shut();//关闭ap联网
-                        mBFrame.TTS(getResources().getString(R.string.Connection_Close));
-                        mBFrame.Facial(EmojNames.DEPRESSED);
-                        mBFrame.outAction(BodyActionCode.ACTION_STAND_STILL);
+
+                        //mohuaiyuan 20180103 原来的代码
+//                        mBFrame.TTS(getResources().getString(R.string.Connection_Close));
+//                        mBFrame.Facial(EmojNames.DEPRESSED);
+//                        mBFrame.outAction(BodyActionCode.ACTION_STAND_STILL);
+                        //mohuaiyuan 20180103 新的代码 20180103
+                        try {
+                            BFrame.response(R.string.Connection_Close);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         isFeelHead = true;
                     }
                     break;
@@ -612,9 +621,11 @@ public class MainActivity extends BaseActivity implements ISceneV {
                 mBFrame.choiceFunctionProcessor(IASRFunction.DEFAULT_ASR_PROCESSOR_OFFLINE);//离线asr
 //                anewConnect = true;
                 hintConnect = true;
-                mBFrame.Facial(EmojNames.DEPRESSED);
-                mBFrame.outAction(BodyActionCode.ACTION_80);
-                mBFrame.Ear(EarActionCode.EAR_MOTIONCODE_6,10);
+
+                //mohuaiyuan 20180103 原来的代码
+//                mBFrame.Facial(EmojNames.DEPRESSED);
+//                mBFrame.outAction(BodyActionCode.ACTION_80);
+//                mBFrame.Ear(EarActionCode.EAR_MOTIONCODE_6,10);
                 detectionTime.schedule(new TimeMachineTimerTask(),0,30000);
 //                TimeMachine.schedule(new TimeMachineTimerTask(),0,30000);
             }else if (AppTools.netWorkAvailable(MainActivity.this)){
@@ -668,7 +679,10 @@ public class MainActivity extends BaseActivity implements ISceneV {
 //                mBFrame.TTS(getResources().getString(R.string.Connection_Break_Hint));
                 //mohuaiyuan 20171220 新的代码 20171220
                 try {
-                    mBFrame.response(R.string.Connection_Break_Hint);
+                    //mohuaiyuan 20180103 原来的代码
+//                    mBFrame.response(R.string.Connection_Break_Hint);
+                    //mohuaiyuan 20180103 新的代码 20180103
+                    mBFrame.response(R.string.the_network_is_broken);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

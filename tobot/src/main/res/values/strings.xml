@@ -17,18 +17,33 @@
 
     <!--mohuaiyuan 20171220 新的字符串-->
     <string name="Connection_Succeed">speech:联网成功，我们可以愉快的聊天了。#,#action:72#,#expression:excites#,#earLightCircle:1</string><!--表情：15-兴奋-->
-    <string name="Connection_Start">speech:联网模式已开启，请打开手机app帮我联网吧#,#action:46#,#expression:excite#,#earLightCircle:6</string><!--表情不可用：3-尴尬-->
-    <string name="Connection_Break_Hint">speech:联网失败，请摸头3秒帮我联网！#,#action:30#,#expression:disappointed#,#earLightCircle:6</string><!--表情不可用：23-委屈可怜，已找到表情-->
+
+    <!--<string name="Connection_Start">speech:联网模式已开启，请打开手机app帮我联网吧#,#action:46#,#expression:calm#,#earLightCircle:6</string>&lt;!&ndash;表情不可用：22-尴尬&ndash;&gt;
+    -->
+    <string name="Connection_Start">speech:联网模式已开启，请打开手机app帮我联网，或摸头3秒退出联网#,#action:46#,#expression:calm#,#earLightCircle:6</string><!--表情不可用：22-尴尬-->
+
+    <!--
+    <string name="Connection_Break_Hint">speech:联网失败，请摸头3秒帮我联网！#,#action:30#,#expression:disappointed#,#earLightCircle:6</string>&lt;!&ndash;表情不可用：23-委屈可怜，已找到表情&ndash;&gt;
+    -->
+    <!--网络连接失败（此时在联网模式，联网失败）--><!--mohuaiyuan 备注：无动作-->
+    <string name="Connection_Break_Hint">speech:网络连接失败，请重新帮我联网或摸头3秒退出联网。#,#expression:disappointed#,#earLightCircle:6</string><!--表情不可用：23-委屈可怜，已找到表情-->
 
     <string name="connect_to_the_internet">@string/Connection_Break_Hint</string>
 
+    <!--未联网 (开机后联网失败提示)-->
+    <string name="connect_network_failed_after_start_up">speech:未连接网络，请使用手机App帮我联网！#,#action:30#,#expression:disappointed#,#earLightCircle:6</string><!--表情：23-委屈可怜-->
+    <!--超过10秒还未连上网络（使用过程断网）-->
+    <string name="the_network_is_broken">speech:网络断了，请摸头3S重新帮我联网！#,#action:30#,#expression:disappointed#,#earLightCircle:6</string><!--表情：23-委屈可怜-->
 
 
-    <string name="Connection_Close">您已关闭联网模式</string>
+
     <!--mohuaiyuan 20171220 原来的字符串-->
+    <!--<string name="Connection_Close">您已关闭联网模式</string>-->
    <!-- <string name="Connection_Recover">网络已恢复连接</string>-->
 
     <!--mohuaiyuan 20171220 新的字符串-->
+    <!--（联网模式，长按三秒退出联网）--><!--mohuaiyuan 备注：无表情-->
+    <string name="Connection_Close">speech:联网模式已解除。#,#action:1#,#earLightCircle:1</string>
     <string name="Connection_Recover">@string/Connection_Succeed</string>
 
 
@@ -69,8 +84,8 @@
     
     <string-array name="onceTouchHead">
         <item>speech:可以跟我聊天，不要乱摸头#,#action:1#,#expression:naughtys</item><!--表情：6- 调皮-->
-        <item>speech:不要一直摸人家的头，会变笨的#,#action:1#,#expression:naughtys</item><!--表情不可用:3-尴尬-->
-        <item>speech:能不能别老摸我#,#action:1#,#expression:naughtys</item><!--表情不可用:7 含羞,已找到表情-->
+        <item>speech:不要一直摸人家的头，会变笨的#,#action:1#,#expression:calm</item><!--表情不可用:22-尴尬 -->
+        <item>speech:能不能别老摸我#,#action:1#,#expression:thank</item><!--表情不可用:7 含羞,已找到表情-->
 
     </string-array>
     
@@ -81,7 +96,7 @@
     </string-array>
 
     <!--mohuaiyuan 20171221 新的字符串-->
-    <string-array name="uprightBoot">speech:主人，%1$s，我已联网，现在可以和我聊天了！#,#action:1#,#expression:naughtys#,#earLightCircle:4</string-array><!--表情不可用：1-眨眼-->
+    <string-array name="uprightBoot">speech:主人，%1$s，我已联网，现在可以和我聊天了！#,#action:1#,#expression:happys#,#earLightCircle:4</string-array><!--表情不可用：16-眨眼-->
     <string-array name="nonUprightBoot">speech:哎呀，终于站起来了。主人，%1$s，我已联网，现在可以和我聊天了！#,#action:21#,#expression:boring#,#earLightCircle:4</string-array><!--表情不可用:29-鬼脸,已找到表情-->
 
     <string-array name="regardsArray">
@@ -99,7 +114,11 @@
         <item>不要说话</item>
         <item>安静点</item>
     </string-array>
-    <string name="straightToSleep_Response">speech:好的，想和我说话你可以叫“小图小图”或者摸头叫我#,#action:1#,#expression:doze#,#earLightCircle:1</string><!--表情不可用:11-睡觉,已找到表情-->
+    <!--mohuaiyuan 修改 20180103-->
+    <!--
+    <string name="straightToSleep_Response">speech:好的，想和我说话你可以叫“小图小图”或者摸头叫我#,#action:1#,#expression:doze#,#earLightCircle:1</string>&lt;!&ndash;表情不可用:11-睡觉,已找到表情&ndash;&gt;
+    -->
+    <string name="straightToSleep_Response">speech:我休息会，想和我说话你可以叫“小图小图”或者摸头叫我#,#action:1#,#expression:doze#,#earLightCircle:1</string><!--表情不可用:11-睡觉,已找到表情-->
     <string name="straightToSleep_awaken">speech:主人，是不是想我了，现在可以和我聊天啦#,#action:82#,#expression:happys#,#earLightCircle:2</string><!--表情：16-开心-->
 
     <string-array name="sitDownAndSleep_keyWorks_array">
@@ -116,7 +135,7 @@
         <item>睡觉去</item>
     </string-array>
     <string name="lieDownAndSleep_Response">speech:那我去睡觉了，你可以叫“小图小图”或者摸头叫醒我#,#action:10#,#expression:doze#,#earLightCircle:0</string><!--表情不可用：全灭-->
-    <string name="lieDownAndSleep_awaken">speech:啊！我睡醒了，地板好冷，小图都快感冒了#,#action:11#,#expression:doze#,#earLightCircle:1</string><!--表情不可用：1-眨眼-->
+    <string name="lieDownAndSleep_awaken">speech:啊！我睡醒了，地板好冷，小图都快感冒了#,#action:11#,#expression:happys#,#earLightCircle:1</string><!--表情不可用：16-眨眼-->
 
 
     <!--mohuaiyuan test -->
