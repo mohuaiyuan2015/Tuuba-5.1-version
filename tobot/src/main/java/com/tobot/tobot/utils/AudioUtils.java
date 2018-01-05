@@ -4,12 +4,15 @@ import android.content.Context;
 import android.media.AudioManager;
 
 /**
- * Created by YF-04 on 2017/11/29.
+ * Created by mohuaiyuan  on 2017/11/29.
  */
 
 public class AudioUtils {
+    private static final String TAG = "AudioUtils";
 
-    public static final int MUSIC_MIN_VOLUME_LEVEL=6;
+    public static final int MUSIC_MIN_VOLUME_LEVEL=1;
+    public static final int MUSIC_MAX_VOLUME_LEVEL=15;
+    public static final int VOLUME_COPIES =15;
 
     public static final int SET_MUSIC_VOLUME_SUCCESS=1;
     public static final int SET_MUSIC_VOLUME_FAILED=-1;
@@ -21,6 +24,11 @@ public class AudioUtils {
     private Context mContext;
 
     private int errorCode;
+
+    private static MaxVolumeListener maxVolumeListener;
+    private static MinVolumeListener minVolumeListener;
+    private static VolumeLegalListener volumeLegalListener;
+    private static VolumeCopyListener volumeCopyListener;
 
     public AudioUtils(Context context){
         this.mContext=context;
@@ -41,10 +49,35 @@ public class AudioUtils {
     }
 
     public int getMaxVolume(){
-        int maxVolumeLevel=-1;
-        maxVolumeLevel=manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        return maxVolumeLevel;
+
+        if (maxVolumeListener!=null){
+            return maxVolumeListener.getMaxVolume();
+        }else {
+            int maxVolumeLevel=-1;
+            maxVolumeLevel=manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            return maxVolumeLevel;
+        }
+
     }
+
+    public int getMinVolume(){
+
+        if (minVolumeListener!=null){
+            return minVolumeListener.getMinVolume();
+        }else {
+            return MUSIC_MIN_VOLUME_LEVEL;
+        }
+
+    }
+
+    public int getVolumeCopies(){
+        if (volumeCopyListener!=null){
+            return volumeCopyListener.getVolumeCopies();
+        }else {
+            return VOLUME_COPIES;
+        }
+    }
+
 
     public int setMusicVolume(int volumeLevel){
 
@@ -52,7 +85,7 @@ public class AudioUtils {
             return errorCode;
         }
         //设置音量：当前音量已经是最小的了
-        if (volumeLevel==MUSIC_MIN_VOLUME_LEVEL && volumeLevel==getCurrentVolume()){
+        if (volumeLevel==getMinVolume() && volumeLevel==getCurrentVolume()){
             errorCode=CURRENT_LEVEL_IS_MIN_VOLUME_LEVEL;
             return errorCode;
         }
@@ -79,11 +112,11 @@ public class AudioUtils {
 
     public int setMinVolume(){
         //设置音量：当前音量已经是最小的了
-        if (MUSIC_MIN_VOLUME_LEVEL == getCurrentVolume()){
+        if (getMinVolume() == getCurrentVolume()){
             errorCode=CURRENT_LEVEL_IS_MIN_VOLUME_LEVEL;
             return errorCode;
         }
-        manager.setStreamVolume(AudioManager.STREAM_MUSIC,MUSIC_MIN_VOLUME_LEVEL,0);
+        manager.setStreamVolume(AudioManager.STREAM_MUSIC,getMinVolume(),0);
         return SET_MUSIC_VOLUME_SUCCESS;
     }
 
@@ -101,12 +134,16 @@ public class AudioUtils {
 
     }
 
+//    public int raiseMusicVolume(){
+//
+//    }
+
     public int adjustLowerMusicVolume(){
         if (!isLegal(getCurrentVolume())){
             return errorCode;
         }
         //设置音量：当前音量已经是最小的了
-        if (MUSIC_MIN_VOLUME_LEVEL ==getCurrentVolume()){
+        if (getMinVolume() ==getCurrentVolume()){
             errorCode=CURRENT_LEVEL_IS_MIN_VOLUME_LEVEL;
             return errorCode;
         }
@@ -119,16 +156,69 @@ public class AudioUtils {
      * @return :
      */
     public boolean isLegal(int volumeLevel){
-        boolean isLegal=false;
-        if (volumeLevel<MUSIC_MIN_VOLUME_LEVEL || volumeLevel>getMaxVolume()){
-            errorCode=SET_MUSIC_VOLUME_FAILED;
-            return isLegal;
+        if (volumeLegalListener!=null){
+            return volumeLegalListener.isLegal(volumeLevel);
+        }else {
+            boolean isLegal=false;
+            if (volumeLevel<getMinVolume() || volumeLevel>getMaxVolume()){
+                errorCode=SET_MUSIC_VOLUME_FAILED;
+                return isLegal;
+            }
+            return true;
         }
 
-        return true;
     }
 
     public int getErrorCode() {
         return errorCode;
     }
+
+    public static MaxVolumeListener getMaxVolumeListener() {
+        return maxVolumeListener;
+    }
+
+    public static void setMaxVolumeListener(MaxVolumeListener maxVolumeListener) {
+        AudioUtils.maxVolumeListener = maxVolumeListener;
+    }
+
+    public static MinVolumeListener getMinVolumeListener() {
+        return minVolumeListener;
+    }
+
+    public static void setMinVolumeListener(MinVolumeListener minVolumeListener) {
+        AudioUtils.minVolumeListener = minVolumeListener;
+    }
+
+    public static VolumeLegalListener getVolumeLegalListener() {
+        return volumeLegalListener;
+    }
+
+    public static void setVolumeLegalListener(VolumeLegalListener volumeLegalListener) {
+        AudioUtils.volumeLegalListener = volumeLegalListener;
+    }
+
+    public static VolumeCopyListener getVolumeCopyListener() {
+        return volumeCopyListener;
+    }
+
+    public static void setVolumeCopyListener(VolumeCopyListener volumeCopyListener) {
+        AudioUtils.volumeCopyListener = volumeCopyListener;
+    }
+
+    interface MaxVolumeListener{
+        int getMaxVolume();
+    }
+    interface MinVolumeListener{
+        int getMinVolume();
+    }
+
+    interface VolumeLegalListener{
+        boolean isLegal(int volumeLevel);
+    }
+
+    interface VolumeCopyListener{
+        int getVolumeCopies();
+    }
+
+
 }

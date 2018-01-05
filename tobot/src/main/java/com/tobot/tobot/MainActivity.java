@@ -40,6 +40,7 @@ import com.tobot.tobot.presenter.ICommon.ISceneV;
 
 import com.tobot.tobot.presenter.IPort.AwakenBehavior;
 import com.tobot.tobot.utils.AppTools;
+import com.tobot.tobot.utils.AudioUtils;
 import com.tobot.tobot.utils.SHA1;
 import com.tobot.tobot.utils.Transform;
 import com.tobot.tobot.utils.okhttpblock.OkHttpUtils;
@@ -417,6 +418,15 @@ public class MainActivity extends BaseActivity implements ISceneV {
                                 MyTouchResponse myTouchResponse=new MyTouchResponse(mContext);
                                 mBFrame.response(myTouchResponse.doubleTouchHeadResponse());
 
+                                //mohuaiyuan 20180104 测试 获取音量
+                                AudioUtils audioUtils=new AudioUtils(mContext);
+                                int currentVolume=audioUtils.getCurrentVolume();
+                                int maxVolume=audioUtils.getMaxVolume();
+                                Log.d("IDormant", "currentVolume: "+currentVolume);
+                                Log.d("IDormant", "maxVolume: "+maxVolume);
+                                int code = audioUtils.adjustLowerMusicVolume();
+                                Log.d("IDormant", "code: "+code);
+
 
                             } else {
                                 Log("触摸--单击");
@@ -429,6 +439,16 @@ public class MainActivity extends BaseActivity implements ISceneV {
                                 mBFrame.response(myTouchResponse.onceTouchHeadResponse());
 
                                 Demand.instance(this).stopDemand();
+
+                                //mohuaiyuan 20180104 测试 获取音量
+                                AudioUtils audioUtils=new AudioUtils(mContext);
+                                int currentVolume=audioUtils.getCurrentVolume();
+                                int maxVolume=audioUtils.getMaxVolume();
+                                Log.d("IDormant", "currentVolume: "+currentVolume);
+                                Log.d("IDormant", "maxVolume: "+maxVolume);
+                                int code = audioUtils.adjustRaiseMusicVolume();
+                                Log.d("IDormant", "code: "+code);
+
 
                                //mohuaiyuan  20171225 测试 表情 序号
     /*                            if (expressionList==null){

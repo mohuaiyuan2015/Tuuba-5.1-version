@@ -186,7 +186,7 @@ public class BFrame implements IFrame {
                     break;
                 case Constants.REPLACE_ASR:
                     //mohuaiyuan  暂时先注释  20171226
-                    replaceFunction();
+//                    replaceFunction();
                     break;
                 case Constants.START_SUCESS_MSG:
                     Log.e(TAG, "⊙_⊙  框架加载成功");
@@ -215,6 +215,8 @@ public class BFrame implements IFrame {
                     //躺下休息（休眠）
                     onLieDownAndSleep();
 
+                    //音量控制
+                    onAdjustVolume();
 
 
                     //唤醒
@@ -341,6 +343,12 @@ public class BFrame implements IFrame {
         mLieDownAndSleep=new LieDownAndSleep(main);
     }
 
+    /**
+     * 音量控制
+     */
+    private void onAdjustVolume(){
+
+    }
 
 
     // 本地命令

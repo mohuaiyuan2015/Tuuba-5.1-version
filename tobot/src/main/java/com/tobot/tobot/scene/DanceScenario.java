@@ -297,7 +297,7 @@ public class DanceScenario implements IScenario{
 //                    }
 //                }
 
-
+                    //mohuaiyuan 20180104 原来的代码
                     if (interrupt.contains("大声点")
                             || interrupt.contains("大点声")
                             || interrupt.contains("声音大一点")
@@ -323,7 +323,7 @@ public class DanceScenario implements IScenario{
                         Log.d(TAG, "currentVolumeLevel: " + currentVolumeLevel);
 
                     }
-
+                    //mohuaiyuan 20180104 原来的代码
                     if (interrupt.contains("小声点")
                             || interrupt.contains("小点声")
                             || interrupt.contains("声音小一点")
@@ -469,7 +469,7 @@ public class DanceScenario implements IScenario{
 //        scenarioRuntimeConfig.addInterruptCmd("再跳一个");
 //        scenarioRuntimeConfig.addInterruptCmd("跳支舞");
 //        scenarioRuntimeConfig.addInterruptCmd("下一个");
-
+        //mohuaiyuan 20180104 原来的代码
         scenarioRuntimeConfig.addInterruptCmd("大声点");
         scenarioRuntimeConfig.addInterruptCmd("小声点");
 

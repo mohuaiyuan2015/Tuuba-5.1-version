@@ -30,7 +30,7 @@ public class DormantManager {
     /**
      * 坐下休息（休眠）：站着休眠 N分钟不唤醒 之后就坐下休息了
      */
-    private static Timer sitDownAndSleepTimer=new Timer(true);
+    private static Timer sitDownAndSleepTimer;
 
     private  SitDownAndSleepTimeTask sitDownAndSleepTimeTask;
 
@@ -56,6 +56,7 @@ public class DormantManager {
             sitDownAndSleepTimeTask=new SitDownAndSleepTimeTask();
         }
 
+        sitDownAndSleepTimer=new Timer(true);
         sitDownAndSleepTimer.schedule(sitDownAndSleepTimeTask,10*60*1000);//N分钟之后
 
     }

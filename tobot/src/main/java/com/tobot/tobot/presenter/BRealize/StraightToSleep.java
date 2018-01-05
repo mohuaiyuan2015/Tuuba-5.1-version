@@ -69,8 +69,10 @@ public class StraightToSleep  implements IDormant ,DormantBehavior,AwakenBehavio
         sleepCommand = new LocalCommand(name, keyWords) {
             //4.1. 在process 函数中实现该命令的具体动作。
             @Override
-            protected void process(String name, String s) {
+            protected void process(String name, String var1) {
                 Log.d(TAG, "StraightToSleep process: 直立休眠---执行命令");
+                Log.d(TAG, "process name : "+name);
+                Log.d(TAG, "process var1 : "+var1);
                 //4.1.1. 本示例中，当喊关键词中配置的词时将使机器人进入睡眠状态
                 //注意： 若要唤醒机器人，可调用wakeup,或者使用语言唤醒词唤醒。
                 mISceneV.getDormant(false);

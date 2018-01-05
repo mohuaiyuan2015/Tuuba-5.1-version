@@ -444,7 +444,7 @@ public class StoryScenario implements IScenario {
 //                        mediaPlayer.seekTo(Integer.parseInt(isNum.replaceAll("").trim()) * speed);
 //                    }
 //                }
-
+                    //mohuaiyuan 20180104 原来的代码
                     if (interrupt.contains("大声点")
                             || interrupt.contains("大点声")
                             || interrupt.contains("声音大一点")
@@ -469,7 +469,7 @@ public class StoryScenario implements IScenario {
                         currentVolumeLevel = audioUtils.getCurrentVolume();
                         Log.d(TAG, "currentVolumeLevel: " + currentVolumeLevel);
                     }
-
+                    //mohuaiyuan 20180104 原来的代码
                     if (interrupt.contains("小声点")
                             || interrupt.contains("小点声")
                             || interrupt.contains("声音小一点")
@@ -492,6 +492,7 @@ public class StoryScenario implements IScenario {
                         currentVolumeLevel = audioUtils.getCurrentVolume();
                         Log.d(TAG, "currentVolumeLevel: " + currentVolumeLevel);
                     }
+
                 } catch (IllegalStateException e) {
 
                 }
@@ -528,7 +529,7 @@ public class StoryScenario implements IScenario {
         scenarioRuntimeConfig.addInterruptCmd("你好小图");
         scenarioRuntimeConfig.addInterruptCmd("退出");
         scenarioRuntimeConfig.addInterruptCmd("推出");
-
+        //mohuaiyuan 20180104 原来的代码
         scenarioRuntimeConfig.addInterruptCmd("大声点");
         scenarioRuntimeConfig.addInterruptCmd("小声点");
         scenarioRuntimeConfig.addInterruptCmd("大点声");
